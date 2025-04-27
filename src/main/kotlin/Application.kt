@@ -2,7 +2,11 @@ package com.example
 
 import com.example.database.connectDatabase
 import com.example.database.migration
+import com.example.entity.TaskTable
 import com.example.plugins.plugins
+import com.example.task.model.Task
+import com.example.task.model.TaskDTO
+import com.example.task.route.tasksRoute
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -23,41 +27,9 @@ fun Application.module() {
 
     routing {
 
-        route("/casas") {
+        tasksRoute()
 
-            get {
-                val query = transaction {
-                    TaskTable.selectAll()
-                        .map {
-                            Task(
-                                id = it[TaskTable.id].value,
-                                name = it[TaskTable.name],
-                                description = it[TaskTable.description],
-                                isCompleted = it[TaskTable.isCompleted]
-                            )
-                        }
-                }
 
-                call.respond(query)
-            }
-
-            post {
-
-                val request = call.receive<TaskDTO>()
-
-                val response = transaction {
-                    TaskTable.insertAndGetId {
-                        it[name] = request.name
-                        it[description] = request.description
-                        it[isCompleted] = request.isCompleted
-                    }.value
-                }
-
-                if (response > 0) {
-                    call.respond(HttpStatusCode.Created)
-                }
-            }
-        }
     }
 
 }
