@@ -8,4 +8,8 @@ interface TasksRepository {
     suspend fun getAllTasks(): List<Task>
 
     suspend fun postCreateTask(task: TaskDTO): Int
+
+    suspend fun putEditTask(id: Int, task: TaskDTO): Int
+
+    suspend fun deleteTask(id: Int): Int
 }

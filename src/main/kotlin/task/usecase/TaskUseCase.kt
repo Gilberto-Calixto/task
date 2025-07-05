@@ -9,4 +9,8 @@ class TaskUseCase(private val service: TaskService) {
 
     suspend fun create(task: TaskDTO) = service.createTask(task)
 
+    suspend fun edit(id: Int, task: TaskDTO) = service.editTask(id, task)
+
+    suspend fun delete(id: Int) = service.deleteTask(id)
+
 }
