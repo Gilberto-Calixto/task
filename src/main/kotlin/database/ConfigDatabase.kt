@@ -5,12 +5,11 @@ import org.jetbrains.exposed.sql.Database
 
 fun Application.connectDatabase() {
 
-    val conf = environment.config
+    val dbUrl = System.getenv("DB_URL") ?: error("Missing DB_URL")
+    println("Connecting to database at $dbUrl")
+    val dbUser = System.getenv("DB_USER") ?: error("Missing DB_USER")
+    val dbPassword = System.getenv("DB_PASSWORD") ?: error("Missing DB_PASSWORD")
+    val dbDriver = System.getenv("DB_DRIVER") ?: error("Missing DB_DRIVER")
 
-    val url = conf.property("postgres.url").getString()
-    val driver = conf.property("postgres.driver").getString()
-    val user = conf.property("postgres.user").getString()
-    val password = conf.property("postgres.password").getString()
-
-    Database.connect(url, driver, user, password)
+    Database.connect(dbUrl, dbDriver, dbUser, dbPassword)
 }

@@ -3,17 +3,29 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
     alias(libs.plugins.kotlin.plugin.serialization)
+    //id("com.github.johnrengelman.shadow") version "8.1.1"
 }
+
+application {
+    mainClass.set("com.example.ApplicationKt") // ajuste para o seu main
+}
+
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    manifest {
+        attributes["Main-Class"] = "com.example.ApplicationKt"
+    }
+}
+
 
 group = "com.example"
 version = "0.0.1"
 
-application {
+/*application {
     mainClass = "io.ktor.server.netty.EngineMain"
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
-}
+}*/
 
 repositories {
     mavenCentral()
