@@ -1,5 +1,6 @@
 
-# Stage 1: Build com GradleFROM gradle:8.2.1-jdk17 AS builder
+# Stage 1: Build com Gradle
+FROM gradle:8.2.1-jdk17 AS builder
 
 WORKDIR /app
 
@@ -7,7 +8,8 @@ COPY . .
 
 RUN ./gradlew clean shadowJar --no-daemon
 
-# Stage 2: RuntimeFROM amazoncorretto:21
+# Stage 2: Runtime
+FROM amazoncorretto:21
 
 WORKDIR /app
 
