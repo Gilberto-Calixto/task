@@ -1,16 +1,19 @@
 
-# Usa JDK 17
-FROM amazoncorretto:21
+# Stage 1: Build com GradleFROM gradle:8.2.1-jdk17 AS builder
 
-# Cria diretório de trabalho
 WORKDIR /app
 
-# Copia o JAR gerado
-COPY build/libs/task-all.jar app.jar
+COPY . .
 
-# Expõe a porta usada pelo Ktor
-EXPOSE 8080
+RUN ./gradlew clean shadowJar --no-daemon
 
-# Comando de execução
+# Stage 2: RuntimeFROM amazoncorretto:21
+
+WORKDIR /app
+
+COPY --from=builder /app/build/libs/task-all.jar app.jar
+
+EXPOSE 8081
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
